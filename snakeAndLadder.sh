@@ -26,6 +26,10 @@ function checkOption()
 			;;
 		$LADDER)
 			currentPosition=$(( currentPosition+getNumber ))
+			if [ $currentPosition -gt $WINNING_POSITION ]
+			then
+				currentPosition=$(( currentPosition-getNumber ))
+			fi
 			;;
 		$SNAKE)
 			currentPosition=$(( currentPosition-getNumber ))
@@ -38,7 +42,7 @@ function checkOption()
 	echo "Current Position : " $currentPosition
 }
 
-while [ $currentPosition -le $WINNING_POSITION ]
+while [ $currentPosition -ne $WINNING_POSITION ]
 do
 	rollingDie
 done
