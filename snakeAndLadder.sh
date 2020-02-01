@@ -2,7 +2,6 @@
 
 echo "Welcome to Snake And Ladder Simulator"
 
-NO_OF_PLAYERS=1
 START_POSITION=0
 WINNING_POSITION=100
 NO_PLAY=0
@@ -10,11 +9,13 @@ LADDER=1
 SNAKE=2
 
 currentPosition=$START_POSITION
+dieCount=0
+
+declare -A position
 
 function rollingDie()
 {
 	getNumber=$(( (RANDOM%6)+1 ))
-	echo "Generated Die Number : "$getNumber
 	checkOption
 }
 
@@ -39,10 +40,20 @@ function checkOption()
 			fi
 			;;
 	esac
-	echo "Current Position : " $currentPosition
+	updatePosition
+}
+
+function updatePosition()
+{
+	position[Roll-"$countDie"]=$currentPosition
 }
 
 while [ $currentPosition -ne $WINNING_POSITION ]
 do
+	countDie=$(( countDie+1 ))
 	rollingDie
 done
+
+echo "Number of Times Die Roll : " $countDie
+
+
