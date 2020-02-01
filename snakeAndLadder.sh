@@ -9,9 +9,31 @@ LADDER=1
 SNAKE=2
 
 currentPosition=$START_POSITION
-dieCount=0
+countDie=0
+playerOnePosition=$START_POSITION
+playerTwoPosition=$START_POSITION
+flag=true
 
 declare -A position
+
+function switchPlayer()
+{
+	if [[ $flag == true ]]
+	then
+		countDie=$(( countDie+1 ))
+		currentPosition=$playerOnePosition
+		playerNum=1
+		rollingDie
+		playerOnePosition=$currentPosition
+		flag=false
+	else
+		currentPosition=$playerTwoPosition
+		playerNum=2
+		rollingDie
+		playerTwoPosition=$currentPosition
+		flag=true
+	fi
+}
 
 function rollingDie()
 {
@@ -45,15 +67,17 @@ function checkOption()
 
 function updatePosition()
 {
-	position[Roll-"$countDie"]=$currentPosition
+	position[Player_"$playerNum"_"$countDie"]=$currentPosition
 }
 
 while [ $currentPosition -ne $WINNING_POSITION ]
 do
-	countDie=$(( countDie+1 ))
-	rollingDie
+	switchPlayer
 done
 
-echo "Number of Times Die Roll : " $countDie
-
-
+if [ $playerOnePosition -gt $playerTwoPosition ]
+then
+	echo "Player 1 : Win!!!"
+else
+	echo "Player 2 : Win!!!"
+fi
