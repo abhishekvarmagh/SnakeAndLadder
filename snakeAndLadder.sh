@@ -14,7 +14,7 @@ playerOnePosition=$START_POSITION
 playerTwoPosition=$START_POSITION
 flag=true
 
-declare -A position
+declare -A playerPosition
 
 function switchPlayer()
 {
@@ -22,13 +22,13 @@ function switchPlayer()
 	then
 		countDie=$(( countDie+1 ))
 		currentPosition=$playerOnePosition
-		playerNum=1
+		playerId=1
 		rollingDie
 		playerOnePosition=$currentPosition
 		flag=false
 	else
 		currentPosition=$playerTwoPosition
-		playerNum=2
+		playerId=2
 		rollingDie
 		playerTwoPosition=$currentPosition
 		flag=true
@@ -67,7 +67,7 @@ function checkOption()
 
 function updatePosition()
 {
-	position[Player_"$playerNum"_"$countDie"]=$currentPosition
+	playerPosition[Player_"$playerId"_"$countDie"]=$currentPosition
 }
 
 while [ $currentPosition -ne $WINNING_POSITION ]
@@ -75,7 +75,7 @@ do
 	switchPlayer
 done
 
-if [ $playerOnePosition -gt $playerTwoPosition ]
+if [ $playerOnePosition -eq $WINNING_POSITION ]
 then
 	echo "Player 1 : Win!!!"
 else
